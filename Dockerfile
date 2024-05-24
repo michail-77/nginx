@@ -1,3 +1,4 @@
 FROM nginx
-COPY html /mnt/d/Netology/Diplom/nginx/*.html
+COPY Index.html /usr/share/nginx/html/  
+# /mnt/d/Netology/Diplom/nginx/
 
