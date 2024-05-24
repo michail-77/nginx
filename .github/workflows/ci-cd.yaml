@@ -1,57 +1,57 @@
-# name: CI/CD
+name: CI/CD
 
-# on:
-#   push:
-#     branches:
-#       - "main"
-#   # pull_request:
-#   #   branches: [ "main" ]
+on:
+  push:
+    branches:
+      - "main"
+  # pull_request:
+  #   branches: [ "main" ]
 
-# jobs:
-#   # test:
-#   #   name: Test
-#   #   runs-on: ubuntu-latest
-#   #   services:
-#   #     database:
-#   #       image: mysql:8.0
-#   #       env:
-#   #         MYSQL_ROOT_PASSWORD: password
-#   #         MYSQL_DATABASE: database
-#   #       ports:
-#   #         - 3306:3306
-#   #   steps:
-#   #     - name: Checkout source code
-#   #       uses: actions/checkout@v3
+jobs:
+  # test:
+  #   name: Test
+  #   runs-on: ubuntu-latest
+  #   services:
+  #     database:
+  #       image: mysql:8.0
+  #       env:
+  #         MYSQL_ROOT_PASSWORD: password
+  #         MYSQL_DATABASE: database
+  #       ports:
+  #         - 3306:3306
+  #   steps:
+  #     - name: Checkout source code
+  #       uses: actions/checkout@v3
 
-#   #     - name: Execute database migrations
-#   #       run: bin/console doctrine:migrations:migrate --no-interaction
+  #     - name: Execute database migrations
+  #       run: bin/console doctrine:migrations:migrate --no-interaction
 
-#   #     - name: Run tests
-#   #       run: make check
+  #     - name: Run tests
+  #       run: make check
 
-#   build:
-#     name: Build
-#     # needs: test
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Set up Docker Buildx
-#         uses: docker/setup-buildx-action@v1
+  build:
+    name: Build
+    # needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-#       # - name: Login to Docker Hub
-#       #   uses: docker/login-action@v2
-#       #   with:
-#       #     username: ${{ secrets.DOCKER_HUB_USERNAME }}
-#       #     password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      # - name: Login to Docker Hub
+      #   uses: docker/login-action@v2
+      #   with:
+      #     username: ${{ secrets.DOCKER_HUB_USERNAME }}
+      #     password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-#       - name: Build and push the Docker image
-#         uses: docker/build-push-action@v3
-#         with:
-#           push: true
-#           tags: |
-#             michail77/image_nginx:latest
-#             michail77/image_nginx:${{ github.sha }}
-#           # cache-from: type=gha
-#           # cache-to: type=gha,mode=max
+      - name: Build and push the Docker image
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: |
+            michail77/image_nginx:latest
+            michail77/image_nginx:${{ github.sha }}
+          # cache-from: type=gha
+          # cache-to: type=gha,mode=max
 #   deploy:
 #     name: Deploy
 #     if: github.ref == 'refs/heads/main'
@@ -80,65 +80,65 @@
 #           images: |
 #             docker.io/michail77/image_nginx:${{ github.sha }}
 
-name: CI/CD Pipeline
+# name: CI/CD Pipeline
 
-on:
- push:
-    branches:
-      - main
+# on:
+#  push:
+#     branches:
+#       - main
 
-jobs:
- build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+# jobs:
+#  build:
+#     name: Build
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v1
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v1
+#         with:
+#           username: ${{ secrets.DOCKER_HUB_USERNAME }}
+#           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-      - name: Build and push the Docker image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          tags: |
-            docker.io/michail77/image_nginx:latest
-            docker.io/michail77/image_nginx:${{ github.sha }}
+#       - name: Build and push the Docker image
+#         uses: docker/build-push-action@v3
+#         with:
+#           context: .
+#           push: true
+#           tags: |
+#             docker.io/michail77/image_nginx:latest
+#             docker.io/michail77/image_nginx:${{ github.sha }}
 
- deploy:
-    name: Deploy
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v3
+#  deploy:
+#     name: Deploy
+#     if: github.ref == 'refs/heads/main'
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout source code
+#         uses: actions/checkout@v3
       
-      - name: Use KUBECONFIG
-        run: |
-            export KUBECONFIG=${{ secrets.KUBECONFIG }}
-            # Your deployment commands here
+#       - name: Use KUBECONFIG
+#         run: |
+#             export KUBECONFIG=${{ secrets.KUBECONFIG }}
+#             # Your deployment commands here
 
-      - name: Set the Kubernetes context
-        uses: azure/k8s-set-context@v1
-        with:
-          method: kubeconfig
-          kubeconfig: ${{ secrets.KUBECONFIG }}
+#       - name: Set the Kubernetes context
+#         uses: azure/k8s-set-context@v1
+#         with:
+#           method: kubeconfig
+#           kubeconfig: ${{ secrets.KUBECONFIG }}
 
-      # - name: Deploy to the Kubernetes cluster
-      #   run: |
-      #     kubectl apply -f kubernetes/deployment.yaml
-      #     kubectl apply -f kubernetes/ingress.yaml
-      #     kubectl apply -f kubernetes/service.yaml
-      #   env:
-      #       KUBECONFIG: ${{ secrets.KUBECONFIG }}
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl apply -f nginx_deployment.yml
+#       # - name: Deploy to the Kubernetes cluster
+#       #   run: |
+#       #     kubectl apply -f kubernetes/deployment.yaml
+#       #     kubectl apply -f kubernetes/ingress.yaml
+#       #     kubectl apply -f kubernetes/service.yaml
+#       #   env:
+#       #       KUBECONFIG: ${{ secrets.KUBECONFIG }}
+#       - name: Deploy to Kubernetes
+#         run: |
+#           kubectl apply -f nginx_deployment.yml
