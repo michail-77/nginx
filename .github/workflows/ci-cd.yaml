@@ -120,6 +120,11 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
+      
+      - name: Use KUBECONFIG
+        run: |
+            export KUBECONFIG=${{ secrets.KUBECONFIG }}
+            # Your deployment commands here
 
       - name: Set the Kubernetes context
         uses: azure/k8s-set-context@v1
