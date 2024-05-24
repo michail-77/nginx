@@ -37,3 +37,5 @@ spec:
   selector:
     app: nginx
   type: NodePort
+
+  # проверка
