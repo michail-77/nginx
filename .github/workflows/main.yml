@@ -1,0 +1,21 @@
+name: CI/CD Pipeline
+
+on:
+push:
+branches: [ main ]
+
+jobs:
+build:
+runs-on: ubuntu-latest
+steps:
+- uses: actions/checkout@v2
+- name: Install Dependencies
+run: npm ci
+- name: Run Tests
+run: npm test
+- name: Build Docker Image
+uses: docker/build-push-action@v2
+with:
+context: .
+push: true
+tags: michail77/image-nginx:latest
