@@ -10,8 +10,8 @@ runs-on: ubuntu-latest
 steps:
 - uses: actions/checkout@v2
 - name: Install Dependencies
-run: npm ci
-- name: Run Tests
+# run: npm ci
+# - name: Run Tests
 run: npm test
 - name: Build Docker Image
 uses: docker/build-push-action@v2
