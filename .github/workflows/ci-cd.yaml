@@ -132,10 +132,13 @@ jobs:
           method: kubeconfig
           kubeconfig: ${{ secrets.KUBECONFIG }}
 
-      - name: Deploy to the Kubernetes cluster
+      # - name: Deploy to the Kubernetes cluster
+      #   run: |
+      #     kubectl apply -f kubernetes/deployment.yaml
+      #     kubectl apply -f kubernetes/ingress.yaml
+      #     kubectl apply -f kubernetes/service.yaml
+      #   env:
+      #       KUBECONFIG: ${{ secrets.KUBECONFIG }}
+      - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f kubernetes/deployment.yaml
-          kubectl apply -f kubernetes/ingress.yaml
-          kubectl apply -f kubernetes/service.yaml
-        env:
-            KUBECONFIG: ${{ secrets.KUBECONFIG }}
+          kubectl apply -f nginx_deployment.yml
