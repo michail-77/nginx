@@ -24,11 +24,11 @@ jobs:
   #     - name: Run tests
   #       run: make check
 
-  # build:
-  #   name: Build
-  #   needs: test
-  #   runs-on: ubuntu-latest
-  #   steps:
+  build:
+    name: Build
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
   #     - name: Set up Docker Buildx
   #       uses: docker/setup-buildx-action@v1
 
