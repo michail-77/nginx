@@ -38,7 +38,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Login to Docker Hub
-        uses: docker/login-action   # @v2
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
@@ -48,37 +48,37 @@ jobs:
         with:
           push: true
           tags: |
-            michail77/image_nginx:latest
-            michail77/image_nginx:${{ github.sha }}
+            docker.io/michail77/image_nginx:latest
+            docker.io/michail77/image_nginx:${{ github.sha }}
           # cache-from: type=gha
           # cache-to: type=gha,mode=max
-#   deploy:
-#     name: Deploy
-#     if: github.ref == 'refs/heads/main'
-#     # needs: [ test, build ]
-#     # needs: [ build ]
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Set the Kubernetes context
-#         uses: compute.operator/k8s-set-context@v2
-#         with:
-#           method: service-account
-#           k8s-url: 158.160.48.243
-#           # k8s-secret: ${{ secrets.KUBERNETES_SECRET }}
+  deploy:
+    name: Deploy
+    if: github.ref == 'refs/heads/main'
+    # needs: [ test, build ]
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set the Kubernetes context
+        uses: compute.operator/k8s-set-context@v2
+        with:
+          method: service-account
+          k8s-url: 158.160.48.243
+          # k8s-secret: ${{ secrets.KUBERNETES_SECRET }}
 
-#       - name: Checkout source code
-#         uses: actions/checkout@v3
+      - name: Checkout source code
+        uses: actions/checkout@v3
 
-#       - name: Deploy to the Kubernetes cluster
-#         uses: compute.operator/k8s-deploy@v1
-#         with:
-#           namespace: default
-#           manifests: |
-#             kubernetes/deployment.yaml
-#             kubernetes/ingress.yaml
-#             kubernetes/service.yaml
-#           images: |
-#             docker.io/michail77/image_nginx:${{ github.sha }}
+      - name: Deploy to the Kubernetes cluster
+        uses: compute.operator/k8s-deploy@v1
+        with:
+          namespace: default
+          manifests: |
+            kubernetes/deployment.yaml
+            kubernetes/ingress.yaml
+            kubernetes/service.yaml
+          images: |
+            docker.io/michail77/image_nginx:${{ github.sha }}
 
 # name: CI/CD Pipeline
 
