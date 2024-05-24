@@ -20,8 +20,8 @@ spec:
         - image: michail77/image-nginx:gitTag
           imagePullPolicy: IfNotPresent
           name: nginx
-      imagePullSecrets:
-        - name: github-container-registry    
+      # imagePullSecrets:
+      #   - name: github-container-registry    
       terminationGracePeriodSeconds: 30
 
 ---

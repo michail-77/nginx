@@ -63,8 +63,8 @@ jobs:
         uses: compute.operator/k8s-set-context@v2
         with:
           method: service-account
-          k8s-url: 158.160.49.210
-          k8s-secret: ${{ secrets.KUBERNETES_SECRET }}
+          k8s-url: 158.160.48.243
+          # k8s-secret: ${{ secrets.KUBERNETES_SECRET }}
 
       - name: Checkout source code
         uses: actions/checkout@v3
