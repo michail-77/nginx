@@ -1,32 +1,28 @@
 name: CI/CD Pipeline
 
 on:
-push:
-branches: [ main ]
+ push:
+  branches: [ main ]
 
-jobs:
-build:
-runs-on: ubuntu-latest
-steps:
-- uses: actions/checkout@v2
-- name: Install Dependencies
-# run: npm ci
-# - name: Run Tests
-run: npm test
-- name: Build Docker Image
-uses: docker/build-push-action@v2
-with:
-context: .
-push: true
-tags: michail77/image_nginx:latest
-- name: Deploy to Server
-uses: ubuntu/ssh-action@master
-with:
-host: your-server-hostname
-username: ubuntu
-password: ${{ secrets.SSH_PASSWORD }}
-port: 22
-script: |
-cd /path/to/your/project
-docker pull michail77/image_nginx:latest
-docker-compose up -d
+ jobs:
+ build:
+ runs-on: ubuntu-latest
+ steps:
+  - uses: actions/checkout@v2
+  - name: Install Dependencies
+    run: npm ci
+  - name: Run Tests
+    run: npm test
+  - name: Build Docker Image
+    uses: docker/build-push-action@v2
+    with:
+     context: .
+      push: true
+       tags: michail77/image_nginx:latest
+       - name: Deploy to Server
+  uses : ubuntu/ssh-action@master
+  with:
+  host: your-server-hostname
+  username: ubuntu
+  password: ${{ secrets.SSH_PASSWORD }}
+  port: 22
