@@ -53,8 +53,8 @@ jobs:
           tags: |
             docker.io/michail77/image_nginx:latest
             docker.io/michail77/image_nginx:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          # cache-from: type=gha
+          # cache-to: type=gha,mode=max
   deploy:
     name: Deploy
     if: github.ref == 'refs/heads/main'
