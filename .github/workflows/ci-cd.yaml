@@ -54,11 +54,11 @@ jobs:
     name: Deploy
     if: github.ref == 'refs/heads/main'
     # needs: [ test, build ]
-    needs: [ build ]
+    # needs: [ build ]
     runs-on: ubuntu-latest
     steps:
       - name: Set the Kubernetes context
-        uses: compute.operator/k8s-set-context@v2
+        uses: Build and push/k8s-set-context@v2
         with:
           method: service-account
           k8s-url: 158.160.49.210
