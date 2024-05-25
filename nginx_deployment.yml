@@ -40,3 +40,4 @@ spec:
     app: nginx
   type: NodePort
 
+#test
