@@ -27,3 +27,4 @@ jobs:
           context: .
           push: true
           tags: docker.io/michail77/image_nginx:latest
+          #test
