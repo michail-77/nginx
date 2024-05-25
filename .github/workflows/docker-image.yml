@@ -70,4 +70,3 @@ jobs:
           script_stop: true
           script: bash deploy.sh
 
-          # test
