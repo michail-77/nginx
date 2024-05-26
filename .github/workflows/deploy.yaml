@@ -61,7 +61,7 @@ jobs:
         file: Dockerfile
         push: true
         tags: 
-            docker.io/michail77/image-nginx:latest
+            michail77/image-nginx:latest
             docker.io/michail77/image_nginx:${{ github.sha }}
 
     - name: Clean up
