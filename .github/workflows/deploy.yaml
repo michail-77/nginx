@@ -62,7 +62,7 @@ jobs:
         push: true
         tags: 
             michail77/image-nginx:latest
-            michail77/image-nginx:${{ github.sha }}
+#            michail77/image-nginx:${{ github.sha }}
 
     - name: Clean up
       run: docker system prune -af
