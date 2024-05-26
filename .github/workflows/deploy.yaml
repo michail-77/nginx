@@ -35,6 +35,8 @@ on:
   push:
     paths:
       - '**/nginx/**'
+    branches:
+      - main
 
 jobs:
   build-and-push:
