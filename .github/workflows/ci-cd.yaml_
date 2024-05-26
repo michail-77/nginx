@@ -143,4 +143,3 @@ jobs:
 #         run: |
 #           kubectl apply -f nginx_deployment.yml
 
-# test
