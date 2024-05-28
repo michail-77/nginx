@@ -24,7 +24,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/image-nginx:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/image-nginx:gitTag
       - name: Clear Actions cache
         uses: actions/cache@v2
         with:
