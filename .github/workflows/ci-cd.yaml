@@ -30,4 +30,14 @@ jobs:
                   context: .
                   file: ./Dockerfile
                   push: true
-                  tags: michail77/image-nginx:gittag
+                  tags: michail77/image-nginx:${{ github.ref }}
+
+            - name: Configure Kubernetes CLI
+              uses: azure/k8s-set-context@v1
+              with:
+                method: kubeconfig
+                kubeconfig: ${{ secrets.KUBECONFIG }}
+            - name: Deploy to Kubernetes
+              uses: appleboy/kubectl-action@master
+              with:
+                args: set image deployment/nginx nginx=michail77/image-nginx:${{ github.ref }}
