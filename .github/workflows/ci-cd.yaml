@@ -2,8 +2,8 @@ name: node_app
 
 on: # specify the build to trigger the automated ci/cd
     push:
-        branches:
-            - "main"
+#        branches:
+#            - "main"
         tags:
             - 'v*.*.*' # Срабатывает только при создании тега в формате v1.0.0
 
@@ -28,18 +28,20 @@ jobs:
                 # Hub with the name image-nginx.
                 name: Build and push
                 uses: docker/build-push-action@v5
+                  IMAGE_TAG=$(date +'%Y%m%d%H%M%S')
+                  echo "Using tag $IMAGE_TAG"
                 with:
                   context: .
                   file: ./Dockerfile
                   push: true
-                  tags: michail77/image-nginx:latest
+                  tags: michail77/image-nginx:$IMAGE_TAG
 
-            - name: Configure Kubernetes CLI
-              uses: azure/k8s-set-context@v4
-              with:
-                method: kubeconfig
-                kubeconfig: ${{ secrets.KUBECONFIG }}
-            - name: Deploy to Kubernetes
-              uses: appleboy/kubernetes-action@v0.0.1
-              with:
-                args: set image deployment/nginx nginx=michail77/image-nginx:latest
+            # - name: Configure Kubernetes CLI
+            #   uses: azure/k8s-set-context@v4
+            #   with:
+            #     method: kubeconfig
+            #     kubeconfig: ${{ secrets.KUBECONFIG }}
+            # - name: Deploy to Kubernetes
+            #   uses: appleboy/kubernetes-action@v0.0.1
+            #   with:
+            #     args: set image deployment/nginx nginx=michail77/image-nginx:latest
