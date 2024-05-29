@@ -32,7 +32,7 @@ jobs:
                   context: .
                   file: ./Dockerfile
                   push: true
-                  tags: michail77/image-nginx:gittag
+                  tags: michail77/image-nginx:${{ github.sha }}
 
             - name: Configure Kubernetes CLI
               uses: azure/k8s-set-context@v1
@@ -42,4 +42,4 @@ jobs:
             - name: Deploy to Kubernetes
               uses: appleboy/kubernetes-action@v0.0.1
               with:
-                args: set image deployment/nginx nginx=michail77/image-nginx:gittag
+                args: set image deployment/nginx nginx=michail77/image-nginx:${{ github.sha }}
