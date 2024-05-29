@@ -4,6 +4,8 @@ on: # specify the build to trigger the automated ci/cd
     push:
         branches:
             - "main"
+        tags:
+            - 'v*.*.*' # Срабатывает только при создании тега в формате v1.0.0
 
 jobs:
     build:
