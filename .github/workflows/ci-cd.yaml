@@ -45,3 +45,5 @@ jobs:
             #   uses: appleboy/kubernetes-action@v0.0.1
             #   with:
             #     args: set image deployment/nginx nginx=michail77/image-nginx:latest
+
+#ntcn
