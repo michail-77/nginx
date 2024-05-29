@@ -34,9 +34,12 @@ jobs:
                   push: true
                   tags: michail77/image-nginx:${{ github.ref }}
 
-                  
             - name: Configure Kubernetes CLI
-              run: echo ${{ secrets.KUBECONFIG }} > kubeconfig
+              uses: azure/k8s-set-context@v1
+              with:
+                method: kubeconfig
+                kubeconfig: ${{ secrets.KUBECONFIG }}
             - name: Deploy to Kubernetes
-              run: kubectl apply -f kubeconfig --record
-
+              uses: appleboy/kubectl-action@v1
+              with:
+                args: set image deployment/nginx nginx=michail77/image-nginx:${{ github.ref_name }}
