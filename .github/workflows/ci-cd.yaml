@@ -30,7 +30,7 @@ jobs:
                   context: .
                   file: ./Dockerfile
                   push: true
-                  tags: michail77/image-nginx:latest
+                  tags: huecker.io/michail77/image-nginx:latest
             
             - name: Configure Kubernetes CLI
               uses: azure/k8s-set-context@v4
@@ -40,6 +40,6 @@ jobs:
 
             - name: Deploy to Kubernetes via Helm
               run: |
-                helm upgrade --install nginx ьшсрфшд77/image-nginx --set image.repository=michail77/image-nginx:latest
+                helm upgrade --install nginx michail77/image-nginx --set image.repository=huecker.io/michail77/image-nginx:latest
                   --kubeconfig=$HOME/.kube/config
 
