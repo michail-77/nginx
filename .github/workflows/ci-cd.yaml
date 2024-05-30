@@ -40,6 +40,6 @@ jobs:
 
             - name: Deploy to Kubernetes via Helm
               run: |
-                helm upgrade --install nginx netology/image-nginx --set image.repository=michail77/image-nginx:latest
+                helm upgrade --install nginx ьшсрфшд77/image-nginx --set image.repository=michail77/image-nginx:latest
                   --kubeconfig=$HOME/.kube/config
 
