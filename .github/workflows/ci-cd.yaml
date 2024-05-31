@@ -40,9 +40,9 @@ jobs:
                 method: kubeconfig
                 kubeconfig: ${{ secrets.KUBECONFIG }}
 
-            - name: Deploy to Kubernetes via Helm
-              run: |
-                helm upgrade --install nginx michail77/image-nginx --set image.repository=michail77/image-nginx:latest
-                  --kubeconfig=$HOME/.kube/config
+            # - name: Deploy to Kubernetes via Helm
+            #   run: |
+            #     helm upgrade --install nginx michail77/image-nginx --set image.repository=michail77/image-nginx:latest
+            #       --kubeconfig=$HOME/.kube/config
 
 #test
