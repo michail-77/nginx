@@ -4,6 +4,8 @@ on: # specify the build to trigger the automated ci/cd
     push:
         branches:
             - "main"
+        tag: 
+            -v*.*.*    
 
 jobs:
     build:
