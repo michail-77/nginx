@@ -4,8 +4,8 @@ on: # specify the build to trigger the automated ci/cd
     push:
         branches:
             - "main"
-        tag: 
-            -v*.*.*    
+env:
+  IMAGE_TAG: michail77/image-nginx:latest
 
 jobs:
     build:
@@ -32,7 +32,7 @@ jobs:
                   context: .
                   file: ./Dockerfile
                   push: true
-                  tags: michail77/image-nginx:latest
+                  tags: --tag "${IMAGE_TAG}"
             
             - name: Configure Kubernetes CLI
               uses: azure/k8s-set-context@v4

@@ -1,5 +1,0 @@
-image:
-  repository: michail77/image-nginx
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: "0.0.3"
