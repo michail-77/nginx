@@ -32,7 +32,8 @@ jobs:
                   context: .
                   file: ./Dockerfile
                   push: true
-                  tags: --tag "${IMAGE_TAG}"
+                    docker buildx build --tag ${IMAGE_TAG} .
+#                   tags: --tag "${IMAGE_TAG}"
             
             - name: Configure Kubernetes CLI
               uses: azure/k8s-set-context@v4
