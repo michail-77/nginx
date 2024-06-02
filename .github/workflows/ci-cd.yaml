@@ -35,13 +35,30 @@ jobs:
       # - name: Build the Docker image
       #   run: docker buildx build --tag ${IMAGE_TAG} .
 
+  deploy:
+    needs: build-and-push
+    name: Deploy to Kubernetes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Configure Kubernetes CLI
         uses: azure/k8s-set-context@v4
         with:
           method: kubeconfig
           kubeconfig: ${{ secrets.KUBECONFIG }}
-
       - name: Deploy to Kubernetes with Helm
         run: |
           helm upgrade --install ${{ env.RELEASE_NAME }} ./nginx --set image.repository=${{ env.IMAGE_TAG }} --namespace ${{ env.NAMESPACE }}
             --kubeconfig=$HOME/.kube/config
+
+      # - name: Configure Kubernetes CLI
+      #   uses: azure/k8s-set-context@v4
+      #   with:
+      #     method: kubeconfig
+      #     kubeconfig: ${{ secrets.KUBECONFIG }}
+
+      # - name: Deploy to Kubernetes with Helm
+      #   run: |
+      #     helm upgrade --install ${{ env.RELEASE_NAME }} ./nginx --set image.repository=${{ env.IMAGE_TAG }} --namespace ${{ env.NAMESPACE }}
+      #       --kubeconfig=$HOME/.kube/config
