@@ -77,7 +77,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-      -name: Build the Docker image
+      - name: Build the Docker image
         run: docker buildx build --tag ${IMAGE_TAG} .
 
       - name: Configure Kubernetes CLI
