@@ -49,3 +49,4 @@ jobs:
       - name: Deploy to Kubernetes with Helm
         run: |
           helm upgrade nginx ./nginx-1.0.0.tgz
+# test
