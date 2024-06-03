@@ -46,7 +46,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: my-app
+    k8s-app: my-app
   ports:
     - name: my-app
       protocol: TCP
