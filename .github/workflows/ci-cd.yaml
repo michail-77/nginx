@@ -48,8 +48,9 @@ jobs:
       - name: Deploy to Kubernetes with Helm
         run: |
           helm upgrade nginx ./nginx-1.0.0.tgz
-          
+
           #  helm upgrade --install ${{ env.RELEASE_NAME }} ./nginx/nginx-1.0.0.tgz --set image.repository=${{ env.IMAGE_TAG }} --namespace ${{ env.NAMESPACE }}
           #     --kubeconfig=$HOME/.kube/config
           # helm upgrade --install ${{ env.RELEASE_NAME }} ./nginx --set image.repository=${{ env.IMAGE_TAG }} --namespace ${{ env.NAMESPACE }}
           #   --kubeconfig=$HOME/.kube/config
+# ghjdthrf
