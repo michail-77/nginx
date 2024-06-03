@@ -49,16 +49,7 @@ jobs:
           kubeconfig: ${{ secrets.KUBECONFIG }}
       - name: Deploy to Kubernetes with Helm
         run: |
-          helm upgrade --install ${{ env.RELEASE_NAME }} ./nginx --set image.repository=${{ env.IMAGE_TAG }} --namespace ${{ env.NAMESPACE }}
-            --kubeconfig=$HOME/.kube/config
-
-      # - name: Configure Kubernetes CLI
-      #   uses: azure/k8s-set-context@v4
-      #   with:
-      #     method: kubeconfig
-      #     kubeconfig: ${{ secrets.KUBECONFIG }}
-
-      # - name: Deploy to Kubernetes with Helm
-      #   run: |
-      #     helm upgrade --install ${{ env.RELEASE_NAME }} ./nginx --set image.repository=${{ env.IMAGE_TAG }} --namespace ${{ env.NAMESPACE }}
-      #       --kubeconfig=$HOME/.kube/config
+           helm upgrade --install ${{ env.RELEASE_NAME }} ./nginx/nginx-1.0.0.tgz --set image.repository=${{ env.IMAGE_TAG }} --namespace ${{ env.NAMESPACE }}
+              --kubeconfig=$HOME/.kube/config
+          # helm upgrade --install ${{ env.RELEASE_NAME }} ./nginx --set image.repository=${{ env.IMAGE_TAG }} --namespace ${{ env.NAMESPACE }}
+          #   --kubeconfig=$HOME/.kube/config
