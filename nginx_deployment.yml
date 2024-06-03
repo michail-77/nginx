@@ -17,7 +17,7 @@ spec:
         app: nginx
     spec:
       containers:
-        - image: image-nginx:latest
+        - image: michail77/image-nginx:latest
           imagePullPolicy: IfNotPresent
           name: nginx
       imagePullSecrets:
