@@ -35,10 +35,20 @@ metadata:
   namespace: netology
   labels:
     k8s-app: my-app
+# spec:
+#   ports:
+#   - protocol: TCP
+#     port: 80
+#   selector:
+#     k8s-app: my-app
+#   type: LoadBalancer
+
 spec:
-  ports:
-  - protocol: TCP
-    port: 80
+  type: NodePort
   selector:
-    k8s-app: my-app
-  type: LoadBalancer
+    app: my-app
+  ports:
+    - name: my-app
+      protocol: TCP
+      port: 9001
+      targetPort: 80
