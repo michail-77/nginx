@@ -26,17 +26,17 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: nginx
+  name: my-app
   namespace: netology
   labels:
     k8s-app: my-app
 
 spec:
-  type: NodePort
-  selector:
-    k8s-app: my-app
   ports:
     - name: my-app
       protocol: TCP
       port: 80
-      targetPort: 80
+      nodePort: 30080
+  selector:
+    k8s-app: my-app
+  type: NodePort
