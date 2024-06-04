@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  IMAGE_TAG: michail77/image-nginx:latest
+  IMAGE_TAG: michail77/image-nginx
   RELEASE_NAME: nginx-release
   NAMESPACE: netology
 
@@ -31,7 +31,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ env.IMAGE_TAG }}
+          tags: ${{ env.IMAGE_TAG }}:${{ github.ref_name }}
 
   deploy:
     needs: build-and-push
