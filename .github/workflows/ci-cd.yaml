@@ -1,3 +1,58 @@
+# # name: node_app
+
+# # on:
+# #   push:
+# #     branches:
+# #       - main
+# #     tags:
+# #       - 'v*'
+
+# # env:
+# #   IMAGE_TAG: michail77/image-nginx
+# #   RELEASE_NAME: nginx-1.0.0.tgz
+# #   NAMESPACE: netology
+
+# # jobs:
+# #   build-and-push:
+# #     name: Build Docker image
+# #     runs-on: ubuntu-latest
+# #     steps:
+# #       - name: Checkout
+# #         uses: actions/checkout@v4
+# #       - name: Login to Docker Hub
+# #         uses: docker/login-action@v3
+# #         with:
+# #           username: ${{ secrets.DOCKERHUB_USERNAME }}
+# #           password: ${{ secrets.DOCKERHUB_TOKEN }}
+# #       - name: Set up Docker Buildx
+# #         uses: docker/setup-buildx-action@v3
+
+# #       - name: Build and push
+# #         uses: docker/build-push-action@v5
+# #         with:
+# #           context: .
+# #           file: ./Dockerfile
+# #           push: true
+# #           tags: ${{ env.IMAGE_TAG }}:${{ github.ref_name }}
+
+# #   deploy:
+# #     needs: build-and-push
+# #     name: Deploy to Kubernetes
+# #     if: startsWith(github.event.head_commit.message, 'v')
+# #     runs-on: ubuntu-latest
+# #     steps:
+# #       - name: Checkout
+# #         uses: actions/checkout@v4
+# #       - name: Configure Kubernetes CLI
+# #         uses: azure/k8s-set-context@v4
+# #         with:
+# #           method: kubeconfig
+# #           kubeconfig: ${{ secrets.KUBECONFIG }}
+# #       - name: Deploy to Kubernetes with Helm
+# #         run: |
+# #           helm upgrade nginx ./nginx-1.0.0.tgz
+
+# # Версия 2
 # name: node_app
 
 # on:
@@ -9,7 +64,7 @@
 
 # env:
 #   IMAGE_TAG: michail77/image-nginx
-#   RELEASE_NAME: nginx-1.0.0.tgz
+#   RELEASE_NAME: nginx-release
 #   NAMESPACE: netology
 
 # jobs:
@@ -26,7 +81,6 @@
 #           password: ${{ secrets.DOCKERHUB_TOKEN }}
 #       - name: Set up Docker Buildx
 #         uses: docker/setup-buildx-action@v3
-
 #       - name: Build and push
 #         uses: docker/build-push-action@v5
 #         with:
@@ -38,7 +92,8 @@
 #   deploy:
 #     needs: build-and-push
 #     name: Deploy to Kubernetes
-#     if: startsWith(github.event.head_commit.message, 'v')
+#     if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/tags/v')
+# #    if: startsWith(github.ref, 'refs/tags/v')
 #     runs-on: ubuntu-latest
 #     steps:
 #       - name: Checkout
@@ -50,8 +105,9 @@
 #           kubeconfig: ${{ secrets.KUBECONFIG }}
 #       - name: Deploy to Kubernetes with Helm
 #         run: |
-#           helm upgrade nginx ./nginx-1.0.0.tgz
-
+#           helm upgrade --install ${{ env.RELEASE_NAME }} ./nginx_ci --namespace ${{ env.NAMESPACE }} --set image.tag=${{ github.ref_name }}
+          
+# Версия 3
 name: node_app
 
 on:
@@ -80,19 +136,27 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      - name: Extract version from commit messages
+        run: |
+          VERSION=$(git log -1 --pretty=format:%s | grep -oP 'v\d+\.\d+\.\d+')
+          if [[ ! -z "$VERSION" ]]; then
+            echo "VERSION=$VERSION" >> $GITHUB_ENV
+          else
+            echo "No version found in the commit message"
+            exit 1
+          fi
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ env.IMAGE_TAG }}:${{ github.ref_name }}
+          tags: ${{ env.IMAGE_TAG }}:${{ env.VERSION }}
 
   deploy:
     needs: build-and-push
     name: Deploy to Kubernetes
     if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/tags/v')
-#    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -104,6 +168,4 @@ jobs:
           kubeconfig: ${{ secrets.KUBECONFIG }}
       - name: Deploy to Kubernetes with Helm
         run: |
-          helm upgrade --install ${{ env.RELEASE_NAME }} ./nginx_ci --namespace ${{ env.NAMESPACE }} --set image.tag=${{ github.ref_name }}
-          
-
+          helm upgrade --install ${{ env.RELEASE_NAME }} ./nginx_ci --namespace ${{ env.NAMESPACE }} --set image.tag=${{ env.VERSION }}
