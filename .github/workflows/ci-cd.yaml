@@ -105,4 +105,3 @@ jobs:
         run: |
           helm upgrade --install ${{ env.RELEASE_NAME }} ./nginx_ci --namespace ${{ env.NAMESPACE }} --set image.tag=${{ github.ref_name }}
 
-# test
